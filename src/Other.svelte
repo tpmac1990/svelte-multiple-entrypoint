@@ -1,16 +1,10 @@
 <script>
-	// non-dynamic import of nested component
-	// import Nested from './Nested.svelte';
 	export let name;
 </script>
 
 <main>
-	<h1>Hello Ma DA {name}!</h1>
+	<h1>Bye Ma Car {name}!</h1>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<!-- <Nested/> -->
-	{#await import("./Nested.svelte") then Module}
-		<Module.default />
-	{/await}
 </main>
 
 <style>

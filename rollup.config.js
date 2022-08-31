@@ -4,6 +4,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import del from 'rollup-plugin-delete'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -29,14 +30,23 @@ function serve() {
 }
 
 export default {
-	input: 'src/main.js',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/build/bundle.js'
-	},
+	input: {
+        main: 'src/main.js',
+        other: 'src/other.js'
+    },
+    output: {
+        sourcemap: false,
+        format: 'esm',
+        dir: 'public/build/',
+		entryFileNames: '[name].js',
+		// using '[name].[hash].js' in development breaks hot-reload
+        chunkFileNames: `[name]${production && '-[hash]' || ''}.js`
+		// `[name]${production && '-[hash]' || ''}.js`
+        // entryFileNames: '[name]-[hash].js',
+        // chunkFileNames: '[name].[hash].js'
+    },
 	plugins: [
+		del({ targets: 'public/build/*.*.js' }), // only delete chunk files, other files will be over written
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production
